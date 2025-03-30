@@ -2,43 +2,45 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 
 int main() {
     printf("[%d] A0\n", getpid());
 
     pid_t pidB = fork();
-    if (pidB == 0) {  // Child B
+    if (pidB == 0) {  
         printf("[%d] B0\n", getpid());
 
         pid_t pidB1 = fork();
-        if (pidB1 == 0) {  // Child B1
+        if (pidB1 == 0) {  
             printf("[%d] B1\n", getpid());
             printf("[%d] Bye\n", getpid());
             exit(0);
         }
 
-        wait(NULL);  // Wait for B1
+        wait(NULL);  
         printf("[%d] Bye\n", getpid());
         exit(0);
     }
 
+    wait(NULL);  // wait B finishes before proceeding to C
+
     pid_t pidC = fork();
-    if (pidC == 0) {  // Child C
+    if (pidC == 0) {  
         printf("[%d] C0\n", getpid());
 
         pid_t pidC1 = fork();
-        if (pidC1 == 0) {  // Child C1
+        if (pidC1 == 0) { 
             printf("[%d] C1\n", getpid());
             printf("[%d] Bye\n", getpid());
             exit(0);
         }
 
-        wait(NULL);  // Wait for C1
+        wait(NULL); 
         printf("[%d] Bye\n", getpid());
         exit(0);
     }
 
-    wait(NULL);  // Wait for B
-    wait(NULL);  // Wait for C
+    wait(NULL);  
     return 0;
 }
