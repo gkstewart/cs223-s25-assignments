@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
         if (num_assigned == 0) break;
 
         pid_t pid = fork();
-        if (pid == 0) {  // Child process
+        if (pid == 0) { 
             for (int j = 0; j < num_assigned; j++) {
                 search_file(files[index++], keyword);
             }
